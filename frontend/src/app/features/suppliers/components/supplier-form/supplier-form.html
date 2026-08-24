@@ -1,0 +1,160 @@
+<div class="modal-overlay" (click)="onCancel()">
+  <div class="modal" (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">{{ title }}</div>
+        <div class="modal-subtitle">{{ subtitle }}</div>
+      </div>
+      <button class="modal-close" (click)="onCancel()">✕</button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+
+      <!-- Sección: Información general -->
+      <div class="form-section-title">Información general</div>
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label for="f-nombre">Nombre / Razón Social *</label>
+          <input
+            id="f-nombre"
+            class="form-input"
+            [class.input-error]="errors['companyName']"
+            type="text"
+            placeholder="Nombre del proveedor"
+            [(ngModel)]="form.companyName"
+            (ngModelChange)="validateField('companyName')"
+            name="companyName"
+          >
+          @if (errors['companyName']) {
+            <span class="field-error">{{ errors['companyName'] }}</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="f-ruc">RUC *</label>
+          <input
+            id="f-ruc"
+            class="form-input"
+            [class.input-error]="errors['ruc']"
+            type="text"
+            placeholder="20512345678"
+            [(ngModel)]="form.ruc"
+            (ngModelChange)="validateField('ruc')"
+            name="ruc"
+          >
+          @if (errors['ruc']) {
+            <span class="field-error">{{ errors['ruc'] }}</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="f-categoria">Categoría *</label>
+          <select id="f-categoria" class="form-select" [(ngModel)]="form.categoryId" name="categoryId">
+            @for (cat of categories; track cat.id) {
+              <option [value]="cat.id">{{ cat.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="f-estado">Estado</label>
+          <select id="f-estado" class="form-select" [(ngModel)]="form.status" name="status">
+            <option [ngValue]="true">Activo</option>
+            <option [ngValue]="false">Inactivo</option>
+          </select>
+        </div>
+
+        <div class="form-group form-full">
+          <label for="f-ubigeo">Ubicación (Ubigeo) *</label>
+          <select
+            id="f-ubigeo"
+            class="form-select"
+            [class.input-error]="errors['ubigeo']"
+            [(ngModel)]="form.ubigeoCode"
+            (change)="validateField('ubigeoCode')"
+            name="ubigeoCode"
+          >
+            <option [value]="0" disabled>Seleccione una ubicación</option>
+            @for (u of ubigeos; track u.ubigeoCode) {
+              <option [value]="u.ubigeoCode">{{ u.department }} - {{ u.province }} - {{ u.district }}</option>
+            }
+          </select>
+          @if (errors['ubigeo']) {
+            <span class="field-error">{{ errors['ubigeo'] }}</span>
+          }
+        </div>
+
+        <div class="form-group form-full">
+          <label for="f-direccion">Dirección *</label>
+          <input
+            id="f-direccion"
+            class="form-input"
+            [class.input-error]="errors['address']"
+            type="text"
+            placeholder="Av. Principal 123, Ciudad"
+            [(ngModel)]="form.address"
+            (ngModelChange)="validateField('address')"
+            name="address"
+          >
+          @if (errors['address']) {
+            <span class="field-error">{{ errors['address'] }}</span>
+          }
+        </div>
+
+      </div>
+
+      <div class="form-divider"></div>
+
+      <!-- Sección: Datos de contacto -->
+      <div class="form-section-title">Datos de contacto</div>
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label for="f-email">Email *</label>
+          <input
+            id="f-email"
+            class="form-input"
+            [class.input-error]="errors['email']"
+            type="email"
+            placeholder="contacto@empresa.com"
+            [(ngModel)]="form.email"
+            (ngModelChange)="validateField('email')"
+            name="email"
+          >
+          @if (errors['email']) {
+            <span class="field-error">{{ errors['email'] }}</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="f-telefono">Teléfono *</label>
+          <input
+            id="f-telefono"
+            class="form-input"
+            [class.input-error]="errors['phone']"
+            type="tel"
+            placeholder="987654321"
+            [(ngModel)]="form.phone"
+            (ngModelChange)="validateField('phone')"
+            name="phone"
+          >
+          @if (errors['phone']) {
+            <span class="field-error">{{ errors['phone'] }}</span>
+          }
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button class="btn btn-ghost" type="button" (click)="onCancel()" [disabled]="isSaving">Cancelar</button>
+      <button class="btn btn-primary" type="button" (click)="onSave()" [disabled]="isSaving">{{ saveLabel }}</button>
+    </div>
+
+  </div>
+</div>

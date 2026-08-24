@@ -1,0 +1,19 @@
+
+# Dependencias
+/node_modules
+/npm-debug.log
+.npm/
+.vscode/
+
+# Build artifacts
+/dist
+/tmp
+
+# Archivos de log
+/logs
+*.log
+
+# Otros
+.git
+.gitignore
+.DS_Store

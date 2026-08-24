@@ -1,0 +1,27 @@
+<div class="main-layout-container">
+  <!-- Aquí iría tu app-sidebar si lo mueves desde app.html -->
+  <aside class="sidebar-placeholder">
+    <!-- Contenido del sidebar (puedes reemplazar esto con <app-sidebar>) -->
+    <nav>
+      <ul>
+        <li><a routerLink="/customers" routerLinkActive="active">Clientes</a></li>
+        <!-- Agrega más enlaces según tus módulos -->
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-info" *ngIf="user">
+        {{ user.name || 'Usuario' }}
+      </div>
+      <button class="logout-btn" (click)="logout()">Cerrar Sesión</button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="top-header">
+      <!-- Opcional: Header superior -->
+    </header>
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

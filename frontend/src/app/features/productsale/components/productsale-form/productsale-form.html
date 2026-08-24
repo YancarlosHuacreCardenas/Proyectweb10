@@ -1,0 +1,124 @@
+<div class="modal-overlay" (click)="onCancel()">
+  <div class="modal" (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">{{ title }}</div>
+        <div class="modal-subtitle">{{ subtitle }}</div>
+      </div>
+      <button class="modal-close" (click)="onCancel()">✕</button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+
+      <!-- Sección: Información del Producto -->
+      <div class="form-section-title">Información del Producto</div>
+      <div class="form-grid">
+
+        <div class="form-group form-full">
+          <label for="f-name">Nombre del Producto *</label>
+          <input
+            id="f-name"
+            class="form-input"
+            [class.input-error]="errors['productName']"
+            type="text"
+            placeholder="Ej: Arándano Biloxi"
+            [(ngModel)]="form.productName"
+            name="productName"
+          >
+          @if (errors['productName']) {
+            <span class="field-error">{{ errors['productName'] }}</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="f-cat">Categoría *</label>
+          <select id="f-cat" class="form-select" [(ngModel)]="form.category" name="category">
+            @for (cat of categories(); track cat.idCategory) {
+              <option [value]="cat.categoryName">{{ cat.categoryName }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="f-unit">Unidad de Medida *</label>
+          <select
+            id="f-unit"
+            class="form-select"
+            [class.input-error]="errors['unitMeasurement']"
+            [(ngModel)]="form.unitMeasurement"
+            name="unitMeasurement"
+          >
+            <option value="UNIDAD">UNIDAD</option>
+            <option value="KG">KG</option>
+            <option value="LITRO">LITRO</option>
+            <option value="SACO">SACO</option>
+            <option value="SOBRE">SOBRE</option>
+            <option value="ROLLO">ROLLO</option>
+          </select>
+          @if (errors['unitMeasurement']) {
+            <span class="field-error">{{ errors['unitMeasurement'] }}</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="f-price">Precio (S/) *</label>
+          <input
+            id="f-price"
+            class="form-input"
+            [class.input-error]="errors['price']"
+            type="number"
+            [(ngModel)]="form.price"
+            name="price"
+            placeholder="0.00"
+          >
+          @if (errors['price']) {
+            <span class="field-error">{{ errors['price'] }}</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="f-stock">Stock Disponible *</label>
+          <input
+            id="f-stock"
+            class="form-input"
+            [class.input-error]="errors['availableStock']"
+            type="number"
+            [(ngModel)]="form.availableStock"
+            name="availableStock"
+            placeholder="0"
+          >
+          @if (errors['availableStock']) {
+            <span class="field-error">{{ errors['availableStock'] }}</span>
+          }
+        </div>
+
+        <div class="form-group form-full">
+          <label for="f-desc">Descripción *</label>
+          <textarea
+            id="f-desc"
+            class="form-input"
+            [class.input-error]="errors['description']"
+            rows="3"
+            placeholder="Breve descripción del producto..."
+            [(ngModel)]="form.description"
+            name="description"
+          ></textarea>
+          @if (errors['description']) {
+            <span class="field-error">{{ errors['description'] }}</span>
+          }
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button class="btn btn-ghost" type="button" (click)="onCancel()">Cancelar</button>
+      <button class="btn btn-primary" type="button" (click)="onSave()">{{ saveLabel }}</button>
+    </div>
+
+  </div>
+</div>

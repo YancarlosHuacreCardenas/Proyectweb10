@@ -1,0 +1,340 @@
+<div class="main-container">
+
+<!-- ══════════════════════════════════════════
+     PAGE HEADER
+══════════════════════════════════════════ -->
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Proveedores</h1>
+    <p class="page-subtitle">{{ stats.total }} proveedores registrados</p>
+  </div>
+  <div style="display: flex; gap: 8px;">
+    <button class="btn-export-pdf" (click)="exportPdf()" [disabled]="isExporting" title="Exportar a PDF">
+      <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" stroke-width="1.8"/>
+        <polyline points="7 10 12 15 17 10" stroke-width="1.8"/>
+        <line x1="12" y1="15" x2="12" y2="3" stroke-width="1.8"/>
+      </svg>
+      {{ isExporting ? 'Exportando...' : 'PDF' }}
+    </button>
+    <button class="btn-export-excel" (click)="exportExcel()" [disabled]="isExportingExcel" title="Exportar a Excel">
+      <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke-width="1.8"/>
+        <path d="M14 2v6h6M8 13h2l2 4 2-4h2M8 17h8" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      {{ isExportingExcel ? 'Exportando...' : 'Excel' }}
+    </button>
+    <button class="btn btn-primary" (click)="openCreate()">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path d="M12 5v14M5 12h14" stroke-width="2.2"/>
+      </svg>
+      Nuevo Proveedor
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     STAT CARDS
+══════════════════════════════════════════ -->
+<div class="stats-grid">
+
+  <div class="stat-card stat-purple">
+    <div class="stat-icon icon-purple">
+      <svg width="18" height="18" fill="none" stroke="#7c3aed" viewBox="0 0 24 24">
+        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke-width="1.8"/>
+        <circle cx="9" cy="7" r="4" stroke-width="1.8"/>
+        <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke-width="1.8"/>
+      </svg>
+    </div>
+    <div class="stat-label">Total Proveedores</div>
+    <div class="stat-value">{{ stats.total }}</div>
+  </div>
+
+  <div class="stat-card stat-green">
+    <div class="stat-icon icon-green">
+      <svg width="18" height="18" fill="none" stroke="#059669" viewBox="0 0 24 24">
+        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="1.8"/>
+      </svg>
+    </div>
+    <div class="stat-label">Activos</div>
+    <div class="stat-value">{{ stats.activos }}</div>
+  </div>
+
+  <div class="stat-card stat-lila">
+    <div class="stat-icon icon-lila">
+      <svg width="18" height="18" fill="none" stroke="#7c3aed" viewBox="0 0 24 24">
+        <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0H5m14 0h2M5 21H3" stroke-width="1.8"/>
+      </svg>
+    </div>
+    <div class="stat-label">Categorías Únicas</div>
+    <div class="stat-value">{{ stats.categorias }}</div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+     TOOLBAR
+══════════════════════════════════════════ -->
+<div class="toolbar">
+  <div class="search-box">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8" stroke-width="1.8"/>
+      <path d="M21 21l-4.35-4.35" stroke-width="1.8"/>
+    </svg>
+    <input
+      class="search-input"
+      type="text"
+      placeholder="Buscar proveedor, RUC, email..."
+      [(ngModel)]="searchQuery"
+      (ngModelChange)="onSearch($event)"
+    >
+  </div>
+
+  <select class="filter-select" [(ngModel)]="filterCategoria" (ngModelChange)="onFilterCategoryChange()">
+    <option value="">Todas las categorías</option>
+    <option value="1">Semillas</option>
+    <option value="2">Fertilizantes</option>
+    <option value="3">Herramientas</option>
+    <option value="4">Insecticidas</option>
+    <option value="5">Sustratos</option>
+    <option value="6">Envases</option>
+  </select>
+
+  <select class="filter-select" [(ngModel)]="filterEstado" (ngModelChange)="onFilterStatusChange()">
+    <option value="">Todos los estados</option>
+    <option value="activo">Activo</option>
+    <option value="inactivo">Inactivo</option>
+  </select>
+
+  <span class="results-count">
+    {{ filteredSuppliers.length }} resultado{{ filteredSuppliers.length !== 1 ? 's' : '' }}
+  </span>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TABLE
+══════════════════════════════════════════ -->
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr>
+        <th>Proveedor</th>
+        <th>RUC</th>
+        <th>Contacto</th>
+        <th>Categoría</th>
+        <th>Estado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    <tbody>
+      @if (isLoading) {
+        <tr>
+          <td colspan="6">
+            <div class="loading-state">
+              <div class="spinner"></div>
+              <p>Cargando proveedores...</p>
+            </div>
+          </td>
+        </tr>
+      } @else if (filteredSuppliers.length === 0) {
+        <tr>
+          <td colspan="6">
+            <div class="empty-state">
+              <div class="empty-icon">📂</div>
+              <h3>No se encontraron proveedores</h3>
+              <p>Intenta con otros filtros o registra uno nuevo.</p>
+            </div>
+          </td>
+        </tr>
+      } @else {
+        @for (s of paginatedSuppliers; track s.supplierId) {
+          <tr>
+            <!-- Proveedor -->
+            <td>
+              <div class="client-cell">
+                <div class="avatar" [ngClass]="'avatar-' + getAvatarColor(s.supplierId)">
+                  {{ getInitials(s.companyName) }}
+                </div>
+                <div>
+                  <div class="client-name">{{ s.companyName }}</div>
+                  <div class="client-address">{{ s.address }}</div>
+                </div>
+              </div>
+            </td>
+  
+            <!-- RUC -->
+            <td class="text-muted text-sm">{{ s.ruc }}</td>
+  
+            <!-- Contacto -->
+            <td>
+              <div class="text-sm">{{ s.email || '—' }}</div>
+              <div class="text-xs text-muted">{{ s.phone }}</div>
+            </td>
+  
+            <!-- Categoría -->
+            <td>
+              <span class="badge" [ngClass]="getCategoryColor(s)">
+                {{ getCategoryName(s) }}
+              </span>
+            </td>
+  
+            <!-- Estado -->
+            <td>
+              <span class="badge" [ngClass]="getStatusColor(s.status)">
+                <span class="badge-dot"></span>
+                {{ getStatusLabel(s.status) }}
+              </span>
+            </td>
+  
+            <!-- Acciones -->
+            <td>
+              <div class="action-btns">
+                <button class="icon-btn" title="Ver detalle" (click)="openView(s.supplierId)">
+                  <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="1.8"/>
+                    <circle cx="12" cy="12" r="3" stroke-width="1.8"/>
+                  </svg>
+                </button>
+                <button class="icon-btn edit" title="Editar" (click)="openEdit(s.supplierId)">
+                  <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-width="1.8"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="1.8"/>
+                  </svg>
+                </button>
+                <button class="icon-btn delete" title="Eliminar" (click)="openDelete(s.supplierId)">
+                  <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <polyline points="3 6 5 6 21 6" stroke-width="1.8"/>
+                    <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" stroke-width="1.8"/>
+                    <path d="M10 11v6M14 11v6M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2" stroke-width="1.8"/>
+                  </svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+
+  <!-- Empty state removed (handled in tbody) -->
+
+  <!-- Footer / Paginación -->
+  <div class="table-footer">
+    <span>{{ pageInfo }}</span>
+    <div class="pagination">
+      @for (p of pageNumbers; track p) {
+        <button class="page-btn" [class.active]="p === currentPage" (click)="goToPage(p)">
+          {{ p }}
+        </button>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MODAL: VER DETALLE
+══════════════════════════════════════════ -->
+@if (modalMode === 'view' && selectedSupplier) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">{{ selectedSupplier.companyName }}</div>
+          <div class="modal-subtitle">{{ getCategoryName(selectedSupplier) }} · {{ getStatusLabel(selectedSupplier.status) }}</div>
+        </div>
+        <button class="modal-close" (click)="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>RUC</label>
+            <input class="form-input" [value]="selectedSupplier.ruc" readonly>
+          </div>
+          <div class="form-group">
+            <label>Categoría</label>
+            <input class="form-input" [value]="getCategoryName(selectedSupplier)" readonly>
+          </div>
+          <div class="form-group form-full">
+            <label>Ubicación</label>
+            <input class="form-input" [value]="getUbigeoLabel(selectedSupplier)" readonly>
+          </div>
+          <div class="form-group form-full">
+            <label>Dirección</label>
+            <input class="form-input" [value]="selectedSupplier.address || '—'" readonly>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input class="form-input" [value]="selectedSupplier.email || '—'" readonly>
+          </div>
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input class="form-input" [value]="selectedSupplier.phone || '—'" readonly>
+          </div>
+          <div class="form-group">
+            <label>Estado</label>
+            <input class="form-input" [value]="getStatusLabel(selectedSupplier.status)" readonly>
+          </div>
+          <div class="form-group">
+            <label>Fecha Registro</label>
+            <input class="form-input" [value]="selectedSupplier.createdAt | date:'short'" readonly>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" (click)="closeModal()">Cerrar</button>
+        <button class="btn btn-primary" (click)="openEdit(selectedSupplier.supplierId)">Editar Proveedor</button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ══════════════════════════════════════════
+     MODAL: CREAR / EDITAR
+══════════════════════════════════════════ -->
+@if (modalMode === 'create' || modalMode === 'edit') {
+  <app-supplier-form
+    [mode]="modalMode"
+    [supplier]="selectedSupplier"
+    [isSaving]="isSaving"
+    (save)="onSaveSupplier($event)"
+    (cancel)="closeModal()"
+  />
+}
+
+<!-- ══════════════════════════════════════════
+     MODAL: CONFIRMAR ELIMINAR
+══════════════════════════════════════════ -->
+@if (modalMode === 'delete' && selectedSupplier) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal modal-sm" (click)="$event.stopPropagation()">
+      <div class="modal-body modal-body-center">
+        <div class="delete-icon">🗑️</div>
+        <div class="delete-title">Eliminar proveedor</div>
+        <p class="delete-text">
+          ¿Estás seguro de que deseas eliminar a
+          <strong>{{ selectedSupplier.companyName }}</strong>?
+          Esta acción cambiará su estado a inactivo.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" (click)="closeModal()">Cancelar</button>
+        <button class="btn btn-danger" (click)="onDeleteSupplier()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ══════════════════════════════════════════
+     TOASTS
+══════════════════════════════════════════ -->
+<div class="toast-container">
+  @for (t of toasts; track t.id) {
+    <div class="toast" [ngClass]="t.type">
+      <span class="toast-icon">{{ t.type === 'success' ? '✓' : '✕' }}</span>
+      {{ t.msg }}
+    </div>
+  }
+</div>
+
+</div> <!-- End main-container -->

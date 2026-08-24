@@ -1,0 +1,768 @@
+/* ==========================================================================
+   ESTILOS PREMIUM DE AUTENTICACIÓN (LOGIN & REGISTER) - berryControl
+   ========================================================================== */
+
+:host {
+  display: block;
+  font-family: var(--font-body);
+  overflow: hidden;
+}
+
+/* Contenedor Principal */
+.auth-page {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #f8fafc;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   PANEL IZQUIERDO: BRANDING & MARKETING DE ALTO NIVEL
+   ────────────────────────────────────────────────────────────────────────── */
+.brand-panel {
+  width: 48%;
+  background: linear-gradient(135deg, #3b0764 0%, #6d28d9 50%, #8b5cf6 100%);
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  color: #ffffff;
+}
+
+/* Efectos de luces de fondo (Glow) */
+.brand-panel::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(167, 139, 250, 0.4) 0%, transparent 70%);
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.brand-panel::after {
+  content: '';
+  position: absolute;
+  bottom: -20%;
+  right: -10%;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.35) 0%, transparent 75%);
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+/* Header con logo */
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+}
+
+.logo-container {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 32px rgba(109, 40, 217, 0.25);
+  transition: transform 0.3s ease;
+}
+
+.brand-panel:hover .logo-container {
+  transform: rotate(5deg) scale(1.05);
+}
+
+.brand-title {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #ffffff 0%, #ddd6fe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Contenido del Branding */
+.brand-content {
+  z-index: 10;
+  margin-top: auto;
+  margin-bottom: auto;
+  max-width: 500px;
+}
+
+.brand-emoji {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.brand-icon {
+  width: 52px;
+  height: 52px;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.25));
+  transition: transform 0.3s ease;
+}
+
+.brand-icon:hover {
+  transform: scale(1.1) translateY(-3px);
+}
+
+.brand-headline {
+  font-size: 2.8rem;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 1.5rem;
+  letter-spacing: -1px;
+  font-family: var(--font-heading);
+  background: linear-gradient(to right, #ffffff, #f3e8ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.brand-subtext {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: #ddd6fe;
+  margin-bottom: 2.5rem;
+}
+
+/* Grid de Características / Tags */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.feature-tag {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-tag:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.tag-icon {
+  font-size: 1.2rem;
+}
+
+.tag-icon-img {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.brand-footer {
+  font-size: 0.85rem;
+  color: #a78bfa;
+  z-index: 10;
+  margin-top: auto;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   PANEL DERECHO: FORMULARIOS E INTERFACES MODERNAS
+   ────────────────────────────────────────────────────────────────────────── */
+.form-panel {
+  width: 52%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 2rem;
+  background-color: #f8fafc; /* Fondo gris claro neutral */
+  overflow-y: auto;
+}
+
+.form-container {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 2rem 2.5rem;
+  width: 100%;
+  max-width: 540px;
+  box-shadow: 0 10px 40px rgba(109, 40, 217, 0.06), 0 2px 8px rgba(0,0,0,0.02);
+  border: 1px solid #e2e8f0;
+  margin: auto;
+}
+
+/* Tabs Header */
+.tabs-header {
+  display: flex;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.tab-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tab-btn:hover {
+  color: #4c1d95;
+}
+
+.tab-btn.active {
+  background: #ffffff;
+  color: #6d28d9;
+  box-shadow: 0 4px 12px rgba(109, 40, 217, 0.08), 0 1px 3px rgba(0,0,0,0.02);
+}
+
+/* Welcome Titles */
+.welcome-section {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.welcome-title {
+  font-size: 1.65rem;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  color: #1e1b4b;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.welcome-subtitle {
+  font-size: 0.88rem;
+  color: #64748b;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Formularios y grupos */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 2px;
+}
+
+.required {
+  color: #ef4444;
+}
+
+/* Input wrappers */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  font-size: 1.1rem;
+  color: #94a3b8;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon-img {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.input-wrapper input,
+.form-group input,
+.select-wrapper select {
+  width: 100%;
+  padding: 11px 14px;
+  padding-left: 42px; /* Espacio para el icono */
+  border-radius: 12px;
+  border: 1.5px solid #cbd5e1;
+  background: #f8fafc;
+  color: #0f172a;
+  font-size: 0.9rem;
+  font-weight: 500;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.form-grid-2 input {
+  padding-left: 14px; /* Sin icono */
+}
+
+.input-wrapper input:focus,
+.form-group input:focus,
+.select-wrapper select:focus {
+  border-color: #7c3aed;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+}
+
+.input-wrapper input.invalid,
+.form-group input.invalid {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+/* Ojo de contraseña */
+.toggle-pass-btn {
+  position: absolute;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 6px;
+  transition: color 0.2s;
+}
+
+.toggle-pass-btn:hover {
+  color: #6d28d9;
+}
+
+/* Select wrapper */
+.select-wrapper {
+  position: relative;
+}
+
+.select-wrapper select {
+  padding-left: 16px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.select-wrapper::after {
+  content: '▼';
+  font-size: 0.75rem;
+  color: #64748b;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* Errores y ayudas */
+.field-error {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #ef4444;
+  margin-top: 2px;
+}
+
+.field-hint {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* Fila de controles adicionales */
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.forgot-pass-link, .tos-link {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #6d28d9;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.forgot-pass-link:hover, .tos-link:hover {
+  color: #4c1d95;
+  text-decoration: underline;
+}
+
+/* Checkbox personalizado */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 28px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #475569;
+  user-select: none;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+  border-color: #7c3aed;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #6d28d9;
+  border-color: #6d28d9;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkbox-container .checkmark:after {
+  left: 5px;
+  top: 2px;
+  width: 5px;
+  height: 9px;
+  border: stroke white;
+  border-width: 0 2px 2px 0;
+  border-style: solid;
+  transform: rotate(45deg);
+}
+
+/* Fila de registro en cuadricula de 2 */
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Textos de TOS */
+.tos-text {
+  font-size: 0.8rem;
+  color: #64748b;
+  line-height: 1.5;
+  text-align: center;
+  margin: 8px 0;
+}
+
+/* Botón Submit */
+.submit-btn {
+  width: 100%;
+  padding: 13px 20px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 14px rgba(109, 40, 217, 0.25);
+}
+
+.btn-primary {
+  background: #6d28d9;
+  color: #ffffff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #5b21b6;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(109, 40, 217, 0.35);
+}
+
+.btn-primary:disabled {
+  background: #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Spinner de carga */
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border-top-color: #ffffff;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   CUENTAS DEMO - DISEÑO ELEGANTE Y COMPACTO
+   ────────────────────────────────────────────────────────────────────────── */
+.demo-accounts-box {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.demo-title {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #64748b;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.demo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.demo-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.demo-card:hover {
+  background: #f5f3ff;
+  border-color: #c084fc;
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(109, 40, 217, 0.05);
+}
+
+.demo-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.role-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.badge-purple {
+  background-color: #f3e8ff;
+  color: #6d28d9;
+}
+
+.badge-blue {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.badge-green {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.badge-gray {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+.badge-orange {
+  background-color: #ffedd5;
+  color: #c2410c;
+}
+
+.demo-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.demo-email {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.demo-pass {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.demo-arrow {
+  font-size: 0.95rem;
+  opacity: 0.5;
+  transition: transform 0.2s;
+}
+
+.demo-card:hover .demo-arrow {
+  opacity: 1;
+  transform: translateX(2px);
+}
+
+/* Animations */
+.animated-fade-in {
+  animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   TOAST ALERTS
+   ────────────────────────────────────────────────────────────────────────── */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 9999;
+}
+
+.toast-alert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  animation: toastSlideIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  max-width: 350px;
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.toast-alert.success {
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-left: 5px solid #047857;
+}
+
+.toast-alert.error {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border-left: 5px solid #b91c1c;
+}
+
+.toast-icon {
+  font-size: 1.2rem;
+}
+
+.toast-msg {
+  line-height: 1.4;
+}
+
+/* Responsive grid */
+@media (max-width: 1024px) {
+  .brand-panel {
+    display: none; /* Oculta el branding en móviles/tablets para dejar toda la atención al form */
+  }
+  .form-panel {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-panel {
+    padding: 1rem;
+  }
+  .form-container {
+    padding: 2rem 1.5rem;
+    border-radius: 16px;
+  }
+  .form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,355 @@
+<div class="auth-page">
+  <!-- ── PANEL IZQUIERDO: BRANDING ── -->
+  <div class="brand-panel">
+    <div class="brand-header">
+      <div class="logo-container">
+        <!-- Logo Arándanos del Sur -->
+        <svg width="36" height="36" viewBox="0 0 64 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 50 Q32 22 58 50" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M24 42 L26 50 L38 50 L40 42 Z" fill="white"/>
+          <rect x="22" y="39" width="20" height="4" rx="1.5" fill="white"/>
+          <line x1="32" y1="39" x2="32" y2="20" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M32 32 Q24 30 20 24" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <ellipse cx="18" cy="22" rx="4" ry="2.2" fill="white" transform="rotate(-35 18 22)"/>
+          <path d="M32 27 Q23 26 19 21" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <ellipse cx="17" cy="19.5" rx="3.2" ry="1.8" fill="white" transform="rotate(-40 17 19.5)"/>
+          <path d="M32 30 Q39 27 43 22" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <ellipse cx="45" cy="20.5" rx="3.5" ry="2" fill="white" transform="rotate(35 45 20.5)"/>
+          <circle cx="32" cy="13" r="5.5" fill="white"/>
+          <circle cx="25" cy="16" r="4.2" fill="white"/>
+          <circle cx="39" cy="16" r="4.2" fill="white"/>
+          <circle cx="29" cy="10" r="3.5" fill="white"/>
+          <circle cx="35" cy="10" r="3.5" fill="white"/>
+        </svg>
+      </div>
+      <span class="brand-title">Berry Control</span>
+    </div>
+
+    <div class="brand-content">
+      <div class="brand-emoji">
+        <img src="https://cdn-icons-png.flaticon.com/512/19003/19003777.png" alt="hydroponics" class="brand-icon" />
+        <img src="https://cdn-icons-png.flaticon.com/512/19003/19003753.png" alt="soil" class="brand-icon" />
+        <img src="https://cdn-icons-png.flaticon.com/512/19033/19033788.png" alt="blueberries" class="brand-icon" />
+      </div>
+      <h1 class="brand-headline">Gestión inteligente para tu vivero frutal</h1>
+      <p class="brand-subtext">
+        Controla pedidos, inventario, clientes y proveedores desde una sola plataforma diseñada para viveros de plantas frutales.
+      </p>
+
+      <div class="features-grid">
+        <div class="feature-tag">
+          <img src="https://cdn-icons-png.flaticon.com/512/18116/18116703.png" alt="pedidos" class="tag-icon-img" /> Gestión de Pedidos
+        </div>
+        <div class="feature-tag">
+          <img src="https://cdn-icons-png.flaticon.com/512/888/888000.png" alt="stock" class="tag-icon-img" /> Control de Stock
+        </div>
+        <div class="feature-tag">
+          <img src="https://cdn-icons-png.flaticon.com/512/2920/2920326.png" alt="ventas" class="tag-icon-img" /> Reportes de Ventas
+        </div>
+        <div class="feature-tag">
+          <img src="https://cdn-icons-png.flaticon.com/512/16104/16104383.png" alt="agenda" class="tag-icon-img" /> Agenda Agrícola
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-footer">
+      © 2026 berryControl · Vivero de Plantas Frutales
+    </div>
+  </div>
+
+  <!-- ── PANEL DERECHO: FORMULARIOS ── -->
+  <div class="form-panel">
+    <div class="form-container">
+      
+      <!-- TABS SWITCHER -->
+      <div class="tabs-header">
+        <button 
+          class="tab-btn" 
+          [class.active]="activeTab() === 'login'"
+          (click)="toggleTab('login')">
+          Iniciar Sesión
+        </button>
+        <button 
+          class="tab-btn" 
+          [class.active]="activeTab() === 'register'"
+          (click)="toggleTab('register')">
+          Registrarse
+        </button>
+      </div>
+
+      <!-- FORMULARIO 1: INICIAR SESIÓN -->
+      @if (activeTab() === 'login') {
+        <div class="tab-content animated-fade-in">
+          <div class="welcome-section">
+            <h2 class="welcome-title">Bienvenido de vuelta</h2>
+            <p class="welcome-subtitle">Ingresa tus credenciales para continuar</p>
+          </div>
+
+          <form (ngSubmit)="onLogin()" #loginForm="ngForm" class="auth-form">
+            <!-- Email Input -->
+            <div class="form-group">
+              <label for="login-email">Correo electrónico <span class="required">*</span></label>
+              <div class="input-wrapper">
+                <span class="input-icon"><img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="email" class="input-icon-img" /></span>
+                <input 
+                  type="email" 
+                  id="login-email" 
+                  name="loginEmail" 
+                  [(ngModel)]="loginEmail"
+                  placeholder="correo@berrycontrol.pe"
+                  required
+                  email
+                  #emailInput="ngModel"
+                  [class.invalid]="emailInput.invalid && emailInput.touched"
+                />
+              </div>
+              @if (emailInput.invalid && emailInput.touched) {
+                <span class="field-error">Por favor, ingresa un correo válido.</span>
+              }
+            </div>
+
+            <!-- Password Input -->
+            <div class="form-group">
+              <div class="label-row">
+                <label for="login-pass">Contraseña <span class="required">*</span></label>
+                <a href="javascript:void(0)" class="forgot-pass-link">¿Olvidaste tu contraseña?</a>
+              </div>
+              <div class="input-wrapper">
+                <span class="input-icon"><img src="https://cdn-icons-png.flaticon.com/512/19018/19018262.png" alt="password" class="input-icon-img" /></span>
+                <input 
+                  [type]="showPassword() ? 'text' : 'password'" 
+                  id="login-pass" 
+                  name="loginPassword" 
+                  [(ngModel)]="loginPassword"
+                  placeholder="••••••••"
+                  required
+                  #passInput="ngModel"
+                  [class.invalid]="passInput.invalid && passInput.touched"
+                />
+                <button 
+                  type="button" 
+                  class="toggle-pass-btn" 
+                  (click)="showPassword.set(!showPassword())"
+                  [title]="showPassword() ? 'Ocultar' : 'Mostrar'">
+                  @if (showPassword()) {
+                    <img src="https://cdn-icons-png.flaticon.com/512/6700/6700739.png" alt="ocultar" class="input-icon-img" />
+                  } @else {
+                    <img src="https://cdn-icons-png.flaticon.com/512/6700/6700739.png" alt="mostrar" class="input-icon-img" />
+                  }
+                </button>
+              </div>
+            </div>
+
+            <!-- Remember Me -->
+            <div class="form-row">
+              <label class="checkbox-container">
+                <input type="checkbox" name="rememberMe" [(ngModel)]="rememberMe" />
+                <span class="checkmark"></span>
+                Mantener sesión iniciada
+              </label>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn btn-primary" [disabled]="loginForm.invalid || isLoading()">
+              @if (isLoading()) {
+                <span class="spinner"></span> Iniciando...
+              } @else {
+                Iniciar Sesión
+              }
+            </button>
+          </form>
+
+          <!-- DEMO ACCOUNTS ACCORDION -->
+          <div class="demo-accounts-box">
+            <h3 class="demo-title">CUENTAS DEMO — CLIC PARA AUTOCOMPLETAR</h3>
+            <div class="demo-list">
+              @for (acc of demoAccounts; track acc.email) {
+                <div 
+                  class="demo-card" 
+                  (click)="autoFillDemo(acc.email, acc.pass)"
+                  title="Haz clic para autocompletar">
+                  <div class="demo-left">
+                    <span class="role-badge" [ngClass]="acc.badgeClass">{{ acc.role }}</span>
+                    <div class="demo-details">
+                      <span class="demo-email">{{ acc.email }}</span>
+                      <span class="demo-pass">{{ acc.pass }}</span>
+                    </div>
+                  </div>
+                  <span class="demo-arrow">➡️</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- FORMULARIO 2: REGISTRARSE -->
+      @if (activeTab() === 'register') {
+        <div class="tab-content animated-fade-in">
+          <div class="welcome-section">
+            <h2 class="welcome-title">Crear cuenta</h2>
+            <p class="welcome-subtitle">Registra un nuevo empleado en el sistema</p>
+          </div>
+
+          <form (ngSubmit)="onRegister()" #registerForm="ngForm" class="auth-form">
+            
+            <!-- Nombre & Apellido en fila -->
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="reg-name">Nombre <span class="required">*</span></label>
+                <input 
+                  type="text" 
+                  id="reg-name" 
+                  name="regName" 
+                  [(ngModel)]="regName"
+                  placeholder="María"
+                  required
+                  #regNameInput="ngModel"
+                  [class.invalid]="regNameInput.invalid && regNameInput.touched"
+                />
+              </div>
+              <div class="form-group">
+                <label for="reg-lastname">Apellido <span class="required">*</span></label>
+                <input 
+                  type="text" 
+                  id="reg-lastname" 
+                  name="regLastName" 
+                  [(ngModel)]="regLastName"
+                  placeholder="Alvarado"
+                  required
+                  #regLastInput="ngModel"
+                  [class.invalid]="regLastInput.invalid && regLastInput.touched"
+                />
+              </div>
+            </div>
+
+            <!-- Email Input -->
+            <div class="form-group">
+              <label for="reg-email">Correo electrónico <span class="required">*</span></label>
+              <div class="input-wrapper">
+                <span class="input-icon"><img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="email" class="input-icon-img" /></span>
+                <input 
+                  type="email" 
+                  id="reg-email" 
+                  name="regEmail" 
+                  [(ngModel)]="regEmail"
+                  placeholder="empleado@berrycontrol.pe"
+                  required
+                  email
+                  #regEmailInput="ngModel"
+                  [class.invalid]="regEmailInput.invalid && regEmailInput.touched"
+                />
+              </div>
+              @if (regEmailInput.invalid && regEmailInput.touched) {
+                <span class="field-error">Por favor, ingresa un correo válido.</span>
+              }
+            </div>
+
+            <!-- Role Selection -->
+            <div class="form-group">
+              <label for="reg-role">Rol en el sistema <span class="required">*</span></label>
+              <div class="select-wrapper">
+                <select 
+                  id="reg-role" 
+                  name="regRoleId" 
+                  [(ngModel)]="regRoleId" 
+                  required
+                  #regRoleInput="ngModel"
+                  [class.invalid]="regRoleInput.invalid && regRoleInput.touched"
+                >
+                  <option [value]="null" disabled selected>Seleccionar rol...</option>
+                  @for (role of roles(); track role.roleId) {
+                    <option [value]="role.roleId">{{ role.roleName }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+
+            <!-- Password Input -->
+            <div class="form-group">
+              <label for="reg-pass">Contraseña <span class="required">*</span></label>
+              <div class="input-wrapper">
+                <span class="input-icon"><img src="https://cdn-icons-png.flaticon.com/512/19018/19018262.png" alt="password" class="input-icon-img" /></span>
+                <input 
+                  [type]="showPassword() ? 'text' : 'password'" 
+                  id="reg-pass" 
+                  name="regPassword" 
+                  [(ngModel)]="regPassword"
+                  placeholder="••••••••"
+                  required
+                  minlength="8"
+                  #regPassInput="ngModel"
+                  [class.invalid]="regPassInput.invalid && regPassInput.touched"
+                />
+                <button 
+                  type="button" 
+                  class="toggle-pass-btn" 
+                  (click)="showPassword.set(!showPassword())">
+                  <img src="https://cdn-icons-png.flaticon.com/512/6700/6700739.png" alt="toggle" class="input-icon-img" />
+                </button>
+              </div>
+              <span class="field-hint">Mínimo 8 caracteres, incluye mayúsculas y números</span>
+            </div>
+
+            <!-- Confirm Password Input -->
+            <div class="form-group">
+              <label for="reg-confpass">Confirmar contraseña <span class="required">*</span></label>
+              <div class="input-wrapper">
+                <span class="input-icon"><img src="https://cdn-icons-png.flaticon.com/512/19018/19018262.png" alt="password" class="input-icon-img" /></span>
+                <input 
+                  [type]="showConfirmPassword() ? 'text' : 'password'" 
+                  id="reg-confpass" 
+                  name="regConfirmPassword" 
+                  [(ngModel)]="regConfirmPassword"
+                  placeholder="••••••••"
+                  required
+                  #regConfPassInput="ngModel"
+                  [class.invalid]="(regConfirmPassword !== regPassword) && regConfPassInput.touched"
+                />
+                <button 
+                  type="button" 
+                  class="toggle-pass-btn" 
+                  (click)="showConfirmPassword.set(!showConfirmPassword())">
+                  <img src="https://cdn-icons-png.flaticon.com/512/6700/6700739.png" alt="toggle" class="input-icon-img" />
+                </button>
+              </div>
+              @if (regConfirmPassword !== regPassword && regConfPassInput.touched) {
+                <span class="field-error">Las contraseñas no coinciden.</span>
+              }
+            </div>
+
+            <!-- TOS disclaimer -->
+            <p class="tos-text">
+              Al registrarte aceptas los <a href="javascript:void(0)" class="tos-link">Términos de Servicio</a> y la <a href="javascript:void(0)" class="tos-link">Política de Privacidad</a> de berryControl.
+            </p>
+
+            <!-- Submit Button -->
+            <button 
+              type="submit" 
+              class="submit-btn btn-primary" 
+              [disabled]="registerForm.invalid || (regPassword !== regConfirmPassword) || isLoading()">
+              @if (isLoading()) {
+                <span class="spinner"></span> Registrando...
+              } @else {
+                Crear Cuenta
+              }
+            </button>
+          </form>
+        </div>
+      }
+
+    </div>
+  </div>
+</div>
+
+<!-- TOASTS FLOATING CONTAINER -->
+<div class="toast-container">
+  @for (toast of toasts(); track toast.id) {
+    <div class="toast-alert" [ngClass]="toast.type">
+      <span class="toast-icon">
+        {{ toast.type === 'success' ? '✅' : '❌' }}
+      </span>
+      <span class="toast-msg">{{ toast.msg }}</span>
+    </div>
+  }
+</div>

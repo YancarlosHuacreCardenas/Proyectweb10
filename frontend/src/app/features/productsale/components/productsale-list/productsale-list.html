@@ -1,0 +1,225 @@
+<div class="page-container">
+
+  <!-- ── Header ── -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Productos para Venta</h1>
+      <p class="page-subtitle">{{ stats.total }} productos registrados</p>
+    </div>
+    <div class="header-actions">
+      <!-- Exportar Excel -->
+      <button class="btn-export-excel" (click)="exportExcel()" title="Exportar a Excel" [disabled]="isExportingExcel">
+        <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke-width="1.8"/>
+          <path d="M14 2v6h6M8 13h2l2 4 2-4h2M8 17h8" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        {{ isExportingExcel ? 'Exportando...' : 'Excel' }}
+      </button>
+      <!-- Exportar PDF -->
+      <button class="btn-export-pdf" (click)="exportPdf()" title="Exportar a PDF" [disabled]="isExportingPdf">
+        <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" stroke-width="1.8"/>
+          <polyline points="7 10 12 15 17 10" stroke-width="1.8"/>
+          <line x1="12" y1="15" x2="12" y2="3" stroke-width="1.8"/>
+        </svg>
+        {{ isExportingPdf ? 'Exportando...' : 'PDF' }}
+      </button>
+      <button class="btn-new" (click)="openCreate()">
+        <span>+</span> Nuevo Producto
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Stats Grid ── -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon icon-purple">📦</div>
+      <div class="stat-info">
+        <div class="stat-label">Total Productos</div>
+        <div class="stat-value">{{ stats.total }}</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon icon-green">✓</div>
+      <div class="stat-info">
+        <div class="stat-label">Activos</div>
+        <div class="stat-value text-green">{{ stats.total - stats.deleted }}</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon icon-amber">⚠</div>
+      <div class="stat-info">
+        <div class="stat-label">Bajo Stock</div>
+        <div class="stat-value text-amber">{{ stats.lowStock }}</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon icon-red">✕</div>
+      <div class="stat-info">
+        <div class="stat-label">Agotados</div>
+        <div class="stat-value text-red">{{ stats.outOfStock }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Filters ── -->
+  <div class="filters-bar">
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="11" cy="11" r="8" stroke-width="2.5"></circle>
+        <path d="M21 21l-4.35-4.35" stroke-width="2.5"></path>
+      </svg>
+      <input class="search-input" type="text" placeholder="Buscar producto, código, categoría..."
+        [(ngModel)]="searchQuery" (ngModelChange)="onSearch($event)">
+    </div>
+
+    <div class="filter-wrapper">
+      <select class="filter-select no-icon" [(ngModel)]="filterStatus" (ngModelChange)="applyFilters()">
+        <option value="active">Solo Activos</option>
+        <option value="deleted">Eliminados</option>
+        <option value="all">Todos</option>
+      </select>
+    </div>
+
+    <div class="results-badge">
+      <span class="count">{{ filteredProducts.length }}</span>
+      <span class="label">resultados</span>
+    </div>
+  </div>
+
+  <!-- ── Card Grid ── -->
+  <div class="products-grid">
+    @if (isLoading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Cargando productos...</p>
+    </div>
+    } @else if (filteredProducts.length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon">📂</div>
+      <h3>No se encontraron productos</h3>
+      <p>Intenta con otros filtros o registra uno nuevo.</p>
+    </div>
+    } @else {
+    @for (p of paginatedProducts; track p.productsSaleId) {
+    <div class="product-card" [class.is-deleted]="p.deletedAt">
+      <!-- Status Badge Top Right -->
+      <div class="card-status-badge">
+        <span class="status-dot" [ngClass]="p.deletedAt ? 'deleted' : (p.availableStock < 10 ? 'low-stock' : 'active')"></span>
+        <span class="status-text">{{ p.deletedAt ? 'Eliminado' : (p.availableStock < 10 ? 'Bajo Stock' : 'Activo') }}</span>
+      </div>
+
+      <!-- Card Header -->
+      <div class="card-header-block">
+        <div class="avatar avatar-purple">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" stroke-width="1.8" />
+            <path d="M16 3H8a2 2 0 00-2 2v2h12V5a2 2 0 00-2-2z" stroke-width="1.8" />
+          </svg>
+        </div>
+        <div class="card-user-info">
+          <h3 class="employee-name">{{ p.productName }}</h3>
+          <p class="employee-email">ID-{{ p.productsSaleId || p.id }} · Categoría {{ p.category || 'Sin categoría' }}</p>
+        </div>
+      </div>
+
+      <!-- Details (Precio, Stock) -->
+      <div class="employee-details">
+        <div class="detail-item">
+          <span class="detail-label">Precio:</span>
+          <span class="detail-val">S/ {{ p.price }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Stock Actual:</span>
+          <span class="detail-val text-green">{{ p.availableStock }} {{ p.unitMeasurement }}</span>
+        </div>
+        @if (p.availableStock < 10 && !p.deletedAt) {
+          <div class="detail-item">
+             <span class="detail-label" style="color:#d97706;">Alerta:</span>
+             <span class="detail-val" style="color:#d97706;">Stock mínimo (10 {{ p.unitMeasurement }})</span>
+          </div>
+        }
+      </div>
+
+      <!-- Actions Bottom Row -->
+      <div class="card-actions-row">
+        @if (!p.deletedAt) {
+          <button class="action-link edit-link" (click)="openEdit(p.productsSaleId!)">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-width="1.8" stroke-linecap="round" />
+              <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+            Editar
+          </button>
+          <button class="action-link delete-link" (click)="openDelete(p.productsSaleId!)">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <polyline points="3 6 5 6 21 6" stroke-width="1.8" stroke-linecap="round" />
+              <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" stroke-width="1.8" stroke-linecap="round" />
+              <path d="M10 11v6M14 11v6M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+            Eliminar
+          </button>
+        } @else {
+          <button class="action-link restore-link" (click)="openRestore(p.productsSaleId!)">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M3 12a9 9 0 019-9 9.75 9.75 0 016.74 2.74L21 8" stroke-width="1.8" stroke-linecap="round" />
+              <path d="M16 3h5v5M21 12a9 9 0 01-9 9 9.75 9.75 0 01-6.74-2.74L3 16" stroke-width="1.8" stroke-linecap="round" />
+              <path d="M8 21H3v-5" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+            Restaurar
+          </button>
+        }
+      </div>
+    </div>
+    }
+    }
+  </div>
+
+  <!-- ── Pagination ── -->
+  <div class="pagination">
+    @for (page of pageNumbers; track page) {
+    <button class="page-btn" [class.active]="page === currentPage" (click)="goToPage(page)">
+      {{ page }}
+    </button>
+    }
+  </div>
+
+</div>
+
+<!-- ── Modals ── -->
+@if (modalMode === 'create' || modalMode === 'edit') {
+<app-productsale-form [mode]="modalMode" [product]="selectedProduct" (save)="onSaveProduct($event)"
+  (cancel)="closeModal()" />
+}
+
+@if (modalMode === 'delete' && selectedProduct) {
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-sm" (click)="$event.stopPropagation()">
+    <h3>Eliminar Producto</h3>
+    <p>¿Estás seguro de eliminar <b>{{ selectedProduct.productName }}</b>?</p>
+    <div class="modal-btns">
+      <button class="btn-ghost" (click)="closeModal()">Cancelar</button>
+      <button class="btn-danger" (click)="onDeleteProduct()">Eliminar</button>
+    </div>
+  </div>
+</div>
+}
+
+@if (modalMode === 'restore' && selectedProduct) {
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-sm" (click)="$event.stopPropagation()">
+    <h3>Restaurar Producto</h3>
+    <p>¿Deseas restaurar el producto <b>{{ selectedProduct.productName }}</b>?</p>
+    <div class="modal-btns">
+      <button class="btn-ghost" (click)="closeModal()">Cancelar</button>
+      <button class="btn-primary" (click)="onRestoreProduct()">Restaurar</button>
+    </div>
+  </div>
+</div>
+}
+
+<div class="toast-container">
+  @for (t of toasts; track t.id) {
+  <div class="toast" [ngClass]="t.type">{{ t.msg }}</div>
+  }
+</div>

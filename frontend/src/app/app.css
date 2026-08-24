@@ -1,0 +1,35 @@
+:host {
+  --sidebar-width: 260px;
+  --sidebar-collapsed-width: 80px;
+  --bg-color: #f8fafc;
+}
+
+.app-container {
+  display: flex;
+  align-items: stretch;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--bg-color);
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100vh;
+}
+
+/* Ajustar el padding si el sidebar está colapsado (opcional, dependiendo de si el sidebar es fixed o no) */
+/* En este caso el sidebar parece que ocupa espacio en el flujo (flex) */
+
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+  
+  .main-content {
+    padding: 1rem;
+  }
+}

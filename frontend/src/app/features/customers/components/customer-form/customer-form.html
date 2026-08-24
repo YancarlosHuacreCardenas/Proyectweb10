@@ -1,0 +1,300 @@
+<div class="modal-overlay" (click)="onCancel()">
+  <div class="modal" (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="header-content">
+        <div class="header-icon">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="modal-title">{{ title }}</div>
+          <div class="modal-subtitle">{{ subtitle }}</div>
+        </div>
+      </div>
+      <button class="modal-close" (click)="onCancel()" title="Cerrar">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+
+      <!-- ── Sección: Información Personal ── -->
+      <div class="section-header">
+        <div class="section-icon section-icon--blue">
+          <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0"/>
+          </svg>
+        </div>
+        <span>Información Personal</span>
+      </div>
+
+      <div class="form-grid">
+
+        <!-- Nombres -->
+        <div class="form-group">
+          <label for="f-nombre">Nombres <span class="asterisk">*</span></label>
+          <input
+            id="f-nombre"
+            class="form-input"
+            [class.input-error]="errors['customerName']"
+            type="text"
+            placeholder="Ingrese los nombres del cliente"
+            [(ngModel)]="form.customerName"
+            name="customerName"
+            autocomplete="off"
+          >
+          @if (errors['customerName']) {
+            <span class="field-error">
+              <svg width="11" height="11" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              {{ errors['customerName'] }}
+            </span>
+          }
+        </div>
+
+        <!-- Apellidos -->
+        <div class="form-group">
+          <label for="f-apellido">Apellidos <span class="asterisk">*</span></label>
+          <input
+            id="f-apellido"
+            class="form-input"
+            [class.input-error]="errors['customerLastname']"
+            type="text"
+            placeholder="Ingrese los apellidos del cliente"
+            [(ngModel)]="form.customerLastname"
+            name="customerLastname"
+            autocomplete="off"
+          >
+          @if (errors['customerLastname']) {
+            <span class="field-error">
+              <svg width="11" height="11" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              {{ errors['customerLastname'] }}
+            </span>
+          }
+        </div>
+
+        <!-- Tipo Cliente — va primero para condicionar el tipo de documento -->
+        <div class="form-group">
+          <label for="f-tipo">Clasificación del Cliente <span class="asterisk">*</span></label>
+          <select id="f-tipo" class="form-select" [(ngModel)]="form.customerType" name="customerType"
+                  (ngModelChange)="onCustomerTypeChange()">
+            <option value="" disabled>Seleccione el tipo de cliente</option>
+            <option value="Empresa">Empresa</option>
+            <option value="Natural">Natural</option>
+          </select>
+        </div>
+
+        <!-- Estado -->
+        <div class="form-group">
+          <label for="f-estado">Estado del Registro</label>
+          <select id="f-estado" class="form-select" [(ngModel)]="form.status" name="status">
+            <option value="" disabled>Seleccione el estado</option>
+            <option [ngValue]="true">Activo</option>
+            <option [ngValue]="false">Inactivo</option>
+          </select>
+        </div>
+
+        <!-- Tipo Documento — condicionado por tipo de cliente -->
+        <div class="form-group">
+          <label for="f-doc-type">
+            Tipo de Documento
+            <span class="doc-hint">
+              @if (form.customerType === 'Empresa') { — solo RUC }
+              @else if (form.customerType === 'Natural') { — DNI o CE }
+            </span>
+          </label>
+          <select id="f-doc-type" class="form-select" [(ngModel)]="form.documentType" name="documentType">
+            <option value="" disabled>Seleccione el tipo de documento</option>
+            @if (form.customerType === 'Empresa') {
+              <option value="RUC">RUC</option>
+            } @else if (form.customerType === 'Natural') {
+              <option value="DNI">DNI</option>
+              <option value="CE">CE</option>
+            } @else {
+              <option value="DNI">DNI</option>
+              <option value="RUC">RUC</option>
+              <option value="CE">CE</option>
+            }
+          </select>
+        </div>
+
+        <!-- Número Documento -->
+        <div class="form-group">
+          <label for="f-doc-num">Número de Documento <span class="asterisk">*</span></label>
+          <input
+            id="f-doc-num"
+            class="form-input"
+            [class.input-error]="errors['documentNumber']"
+            type="text"
+            [placeholder]="docNumberPlaceholder"
+            [(ngModel)]="form.documentNumber"
+            name="documentNumber"
+            autocomplete="off"
+          >
+          @if (errors['documentNumber']) {
+            <span class="field-error">
+              <svg width="11" height="11" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              {{ errors['documentNumber'] }}
+            </span>
+          }
+        </div>
+
+      </div>
+
+      <!-- ── Sección: Ubicación ── -->
+      <div class="section-header">
+        <div class="section-icon section-icon--green">
+          <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+        </div>
+        <span>Ubicación y Dirección</span>
+      </div>
+
+      <div class="form-grid">
+
+        <!-- Ubigeo -->
+        <div class="form-group form-full">
+          <label for="f-ubigeo">Ubigeo — Departamento / Provincia / Distrito <span class="asterisk">*</span></label>
+          <select
+            id="f-ubigeo"
+            class="form-select"
+            [class.input-error]="errors['ubigeo']"
+            [(ngModel)]="form.ubigeoCode"
+            name="ubigeoCode"
+          >
+            <option [value]="0" disabled>Seleccione la ubicación del cliente</option>
+            @for (u of ubigeos; track u.ubigeoCode) {
+              <option [value]="u.ubigeoCode">{{ u.department }} › {{ u.province }} › {{ u.district }}</option>
+            }
+          </select>
+          @if (errors['ubigeo']) {
+            <span class="field-error">
+              <svg width="11" height="11" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              {{ errors['ubigeo'] }}
+            </span>
+          }
+        </div>
+
+        <!-- Dirección -->
+        <div class="form-group form-full">
+          <label for="f-direccion">Dirección Exacta <span class="asterisk">*</span></label>
+          <input
+            id="f-direccion"
+            class="form-input"
+            [class.input-error]="errors['address']"
+            type="text"
+            placeholder="Ingrese la dirección completa del cliente (Av., Calle, Jr., número)"
+            [(ngModel)]="form.address"
+            name="address"
+            autocomplete="off"
+          >
+          @if (errors['address']) {
+            <span class="field-error">
+              <svg width="11" height="11" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              {{ errors['address'] }}
+            </span>
+          }
+        </div>
+
+      </div>
+
+      <!-- ── Sección: Contacto ── -->
+      <div class="section-header">
+        <div class="section-icon section-icon--purple">
+          <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        <span>Datos de Contacto</span>
+      </div>
+
+      <div class="form-grid">
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="f-email">Correo Electrónico <span class="asterisk">*</span></label>
+          <input
+            id="f-email"
+            class="form-input"
+            [class.input-error]="errors['email']"
+            type="email"
+            placeholder="Ingrese el correo electrónico del cliente"
+            [(ngModel)]="form.email"
+            name="email"
+            autocomplete="off"
+          >
+          @if (errors['email']) {
+            <span class="field-error">
+              <svg width="11" height="11" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              {{ errors['email'] }}
+            </span>
+          }
+        </div>
+
+        <!-- Teléfono -->
+        <div class="form-group">
+          <label for="f-telefono">Número de Teléfono <span class="asterisk">*</span></label>
+          <input
+            id="f-telefono"
+            class="form-input"
+            [class.input-error]="errors['phone']"
+            type="text"
+            placeholder="Ingrese el número de teléfono (9 dígitos)"
+            [(ngModel)]="form.phone"
+            name="phone"
+            autocomplete="off"
+          >
+          @if (errors['phone']) {
+            <span class="field-error">
+              <svg width="11" height="11" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              {{ errors['phone'] }}
+            </span>
+          }
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button class="btn btn-ghost" type="button" (click)="onCancel()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+        Cancelar
+      </button>
+      <button class="btn btn-primary" type="button" (click)="onSave()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+        {{ saveLabel }}
+      </button>
+    </div>
+
+  </div>
+</div>
